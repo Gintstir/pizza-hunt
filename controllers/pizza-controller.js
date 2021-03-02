@@ -6,6 +6,12 @@ const pizzaController = {
     //get all pizzas same as findAll
     getAllPizza(req, res) {
         Pizza.find({})
+        .populate({
+            path: 'comments',
+            select: '-__v'
+        })
+        .select('-__v')
+        .sort({ _id: -1 }) //this sorts in desc order by the _id value
         .then(dbPizzaData => res.json(dbPizzaData))
         .catch(err => {
             console.log(err);
@@ -16,6 +22,11 @@ const pizzaController = {
     //get one pizza by ID same as findOne
     getPizzaById({ params }, res) {
         Pizza.findOne({ _id: params.id })
+        .populate({
+            path: 'comments',
+            select: '-__v'
+        })
+        .select('-__v')
         .then(dbPizzaData => {
             //if no pizza data is found return 404
             if(!dbPizzaData) {
