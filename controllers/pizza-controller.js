@@ -48,9 +48,9 @@ const pizzaController = {
         .catch(err => res.status(400).json(err))
     },
 
-    //update a pizza PUT
+    //update a pizza by ID PUT
     updatePizza({ params, body}, res) {
-        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true }) //if we dont set new: true it wont update and will return the original
+        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true }) //if we dont set new: true it wont update and will return the original, must set  runValidators to true so it knows to validate any new information
         .then(dbPizzaData => {
             if(!dbPizzaData) {
                 res.status(404).json({ message: 'No pizza found with this id!' });
